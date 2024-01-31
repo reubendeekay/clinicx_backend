@@ -1,0 +1,34 @@
+Clinic X Software
+ClinicX is an emerging health provider in the country, currently in 3 cities(Nairobi,Mombasa
+and Kisumu) but hoping to scale across the other major cities.The clinics are distributed in
+various locations, and each branch offers a subset or all the services currently listed under
+ClinicX.
+You are tasked to write ClinicX software which will have below features:
+1. Enable ClinicX better manage its branches across the country.
+2. Avail a feature where patients can easily locate ClinicX branches.
+3. Allow patients to book for the various services listed under ClinicX.
+4. Generate below reports for management use:
+a. Daily,Weekly and Monthly bookings per branch
+
+Proposed Tools:Java && SpringBoot,Angular,PrimeNg,JasperReports,any SQL database.
+
+Implementation Instructions
+For all the tasks discussed above we will be utilizing the Software Engineering concepts
+discussed in our previous session.Below is a summary:
+1. To ensure code quality, all the code must have unit tests.This applies for APP,WEB and
+backend components.
+2. For the API based components you are expected to stress test your APIs and clearly
+articulate the throughput of your endpoints i.e the number of transactions per second.
+3. Since the tasks will be done in groups of about 5 students, You will be expected to
+collaborate using below tools:
+a. Github for code management.The repositories should be public. Usage of feature
+branches will be highly encouraged.
+b. ASANA for task management. Asana is free for up to 5 participants.Each group
+can have its own account.
+
+4. The groups are encouraged to have weekly code reviews.In these reviews below is
+encouraged:
+a. Constructive and positive feedback.
+b. Suggestions on better ways of approaching a task/solution.
+c. Intensive code walkthrough.
+5. More instructions will be given as we proceed.
