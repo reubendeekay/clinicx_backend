@@ -5,6 +5,7 @@ from sqlalchemy import func
 from ..database import SessionLocal, get_db
 from .. import models, schemas, oauth2
 from ..communication import send_user_email
+import random
 
 
 router = APIRouter(
@@ -21,6 +22,10 @@ def get_patients(
     skip: int = 0,
     search: Optional[str] = "",
 ):
+
+    if search != "":
+        query = f"SELECT * FROM patients WHERE first_name ILIKE '%{search}%' OR last_name ILIKE '%{search}%' OR email ILIKE '%{search}%' OR phone_number ILIKE '%{search}%'"
+        return db.execute(query).fetchall()
 
     return db.query(models.Patient).offset(skip).limit(limit).all()
 
@@ -107,3 +112,49 @@ def update_patient(
             status_code=HTTPStatus.NOT_FOUND, detail="Patient not found"
         )
     return updated_patient
+
+
+# Implement patient login
+@router.post("/login", response_model=schemas.User)
+async def login_patient(
+    user: schemas.PatientLogin,
+    db: SessionLocal = Depends(get_db),
+):
+    if user.email is None or user.phone_number is None:
+        raise HTTPException(
+            status_code=HTTPStatus.BAD_REQUEST,
+            detail="Email or phone number is required",
+        )
+
+    patient = (
+        db.query(models.Patient)
+        .filter(
+            models.Patient.email == user.email
+            or models.Patient.phone_number == user.phone_number
+        )
+        .first()
+    )
+
+    if patient is None:
+        raise HTTPException(
+            status_code=HTTPStatus.NOT_FOUND, detail="Patient not found"
+        )
+
+    # Generate OTP randomly of 4 digits
+    otp = random.randint(1000, 9999)
+
+    # Save the OTP in the database
+    otp_data = models.OTP(user_id=patient.id, otp=otp)
+    db.add(otp_data)
+    db.commit()
+    db.refresh(otp_data)
+
+    # Send the OTP to the patient
+    await send_user_email(
+        email=patient.email,
+        user=patient.first_name,
+        body=f"Hi {patient.first_name}, welcome to the clinic. Your OTP is {otp}.",
+    )
+    print(otp)
+
+    return {"message": "OTP sent"}

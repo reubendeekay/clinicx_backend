@@ -161,6 +161,14 @@ class PatientOut(PatientBase):
         orm_mode = True
 
 
+class PatientLogin(BaseModel):
+    email: Optional[EmailStr] = None
+    phone_number: Optional[str] = None
+
+    class Config:
+        orm_mode = True
+
+
 class AppointmentBase(BaseModel):
     patient_id: int
     doctor_id: int
@@ -210,6 +218,14 @@ class PaymentCreate(PaymentBase):
 class PaymentOut(PaymentBase):
     id: int
     appointment: AppointmentOut
+
+    class Config:
+        orm_mode = True
+
+
+class OTP(BaseModel):
+    user_id: str
+    otp: str
 
     class Config:
         orm_mode = True

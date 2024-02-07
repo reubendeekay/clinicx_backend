@@ -149,3 +149,15 @@ class Payment(Base):
     created_at = Column(
         TIMESTAMP(timezone=True), server_default=text("NOW()"), nullable=False
     )
+
+
+class OTP(Base):
+    __tablename__ = "otps"
+
+    id = Column(Integer, primary_key=True, nullable=False)
+    is_active = Column(Boolean, server_default="TRUE", nullable=False)
+    user_id = Column(Integer, nullable=False)
+    otp = Column(String, nullable=False)
+    created_at = Column(
+        TIMESTAMP(timezone=True), server_default=text("NOW()"), nullable=False
+    )

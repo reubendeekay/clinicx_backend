@@ -21,6 +21,9 @@ def get_appointments(
     skip: int = 0,
     search: Optional[str] = "",
 ):
+    if search != "":
+        query = f"SELECT * FROM appointments WHERE reason ILIKE '%{search}%' OR appointment_date ILIKE '%{search}%' OR appointment_time ILIKE '%{search}%'"
+        return db.execute(query).fetchall()
 
     return db.query(models.Appointment).offset(skip).limit(limit).all()
 
@@ -45,7 +48,6 @@ def get_appointment(
 async def create_appointment(
     appointment: schemas.AppointmentBase,
     db: SessionLocal = Depends(get_db),
-    current_user: schemas.User = Depends(oauth2.get_current_user),
 ):
 
     # Check if doctor exists
