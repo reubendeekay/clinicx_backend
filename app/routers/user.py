@@ -28,6 +28,13 @@ async def create_user(user: schemas.UserCreate, db: SessionLocal = Depends(get_d
     hashed_password = utils.hash(user.password)
     user.password = hashed_password
 
+    # Check if user exists
+    user_query = db.query(models.User).filter(models.User.email == user.email)
+    if user_query.first() is not None:
+        raise HTTPException(
+            status_code=HTTPStatus.CONFLICT, detail="User already exists"
+        )
+
     new_user = models.User(**user.dict())
     db.add(new_user)
     db.commit()

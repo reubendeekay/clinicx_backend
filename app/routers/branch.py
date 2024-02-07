@@ -4,6 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import func
 from ..database import SessionLocal, get_db
 from .. import models, schemas, oauth2
+from fastapi.responses import FileResponse
 
 
 router = APIRouter(
@@ -99,3 +100,21 @@ def update_branch(
     db.commit()
 
     return branch.first()
+
+
+# Branch locator
+
+
+@router.get("/locator/{search_query}", response_model=List[schemas.BranchOut])
+def get_branch_by_location(
+    search_query: str,
+    db: SessionLocal = Depends(get_db),
+):
+
+    # Use SQL Query to get the branch by location instead of using the ORM. Includes instead of full text search
+    query = f"SELECT * FROM branches WHERE name ILIKE '%{search_query}%' OR description ILIKE '%{search_query}%' OR address ILIKE '%{search_query}%'"
+    branch = db.execute(query).fetchall()
+
+    if branch is None:
+        raise HTTPException(status_code=404, detail="Branch not found")
+    return branch
