@@ -10,6 +10,10 @@ from .tests.utils import (
     verify_if_appointment,
     generate_doctor_data,
     verify_if_doctor,
+    generate_service_data,
+    vefify_if_service,
+    generate_patient_data,
+    verify_if_patient,
 )
 
 
@@ -61,11 +65,36 @@ def create_branch():
 
 
 def create_appointment():
+    patient_id = create_patient()["id"]
+    doctor_id = create_doctor()["id"]
+    service_id = create_service()["id"]
 
-    appointment = generate_appointment_data()
+    appointment = generate_appointment_data(
+        patient_id=patient_id, doctor_id=doctor_id, service_id=service_id
+    )
     token = login_user()["access_token"]
     response = client.post(
         "/appointments/", json=appointment, headers={"Authorization": f"Bearer {token}"}
+    )
+    assert response.status_code == 201
+    return response.json()
+
+
+def create_patient():
+    patient = generate_patient_data()
+    token = login_user()["access_token"]
+    response = client.post(
+        "/patients/", json=patient, headers={"Authorization": f"Bearer {token}"}
+    )
+    assert response.status_code == 201
+    return response.json()
+
+
+def create_service():
+    service = generate_service_data()
+    token = login_user()["access_token"]
+    response = client.post(
+        "/services/", json=service, headers={"Authorization": f"Bearer {token}"}
     )
     assert response.status_code == 201
     return response.json()
@@ -201,9 +230,116 @@ def test_delete_doctor():
     assert response.status_code == 204
 
 
+# SERVICE TESTS
+
+
+def test_create_service():
+    service = create_service()
+    vefify_if_service(service)
+
+
+def test_get_service():
+    token = login_user()["access_token"]
+    service = create_service()
+    response = client.get(
+        f"/services/{service['id']}", headers={"Authorization": f"Bearer {token}"}
+    )
+    assert response.status_code == 200
+    data = response.json()
+    vefify_if_service(data)
+
+
+def test_get_services():
+    token = login_user()["access_token"]
+    response = client.get("/services/", headers={"Authorization": f"Bearer {token}"})
+    assert response.status_code == 200
+    assert response.json() == [] or response.json() is not None
+    vefify_if_service(response.json()[0])
+
+
+def test_delete_service():
+    service = create_service()
+    token = login_user()["access_token"]
+    response = client.delete(
+        f"/services/{service['id']}", headers={"Authorization": f"Bearer {token}"}
+    )
+    assert response.status_code == 204
+
+
+# Patient tests
+
+
+def test_create_patient():
+    patient = create_patient()
+    verify_if_patient(patient)
+
+
+def test_get_patient():
+    patient = create_patient()
+    token = login_user()["access_token"]
+    response = client.get(
+        f"/patients/{patient['id']}", headers={"Authorization": f"Bearer {token}"}
+    )
+
+    assert response.status_code == 200
+    data = response.json()
+    verify_if_patient(data)
+
+
+def test_get_patients():
+    token = login_user()["access_token"]
+    response = client.get("/patients/", headers={"Authorization": f"Bearer {token}"})
+    assert response.status_code == 200
+    assert response.json() == [] or response.json() is not None
+    verify_if_patient(response.json()[0])
+
+
+def test_delete_patient():
+    patient = create_patient()
+    token = login_user()["access_token"]
+    response = client.delete(
+        f"/patients/{patient['id']}", headers={"Authorization": f"Bearer {token}"}
+    )
+
+    assert response.status_code == 204
+
+
 # APPOINTMENT TESTS
 
 
-# def test_create_appointment():
-#     appointment = create_appointment()
-#     verify_if_appointment(appointment)
+def test_create_appointment():
+    appointment = create_appointment()
+    verify_if_appointment(appointment)
+
+
+def test_get_appointment():
+    appointment = create_appointment()
+    token = login_user()["access_token"]
+    response = client.get(
+        f"/appointments/{appointment['id']}",
+        headers={"Authorization": f"Bearer {token}"},
+    )
+    assert response.status_code == 200
+    data = response.json()
+    verify_if_appointment(data)
+
+
+def test_get_appointments():
+    token = login_user()["access_token"]
+    response = client.get(
+        "/appointments/", headers={"Authorization": f"Bearer {token}"}
+    )
+    assert response.status_code == 200
+    assert response.json() == [] or response.json() is not None
+    verify_if_appointment(response.json()[0])
+
+
+def test_delete_appointment():
+    appointment = create_appointment()
+    token = login_user()["access_token"]
+    response = client.delete(
+        f"/appointments/{appointment['id']}",
+        headers={"Authorization": f"Bearer {token}"},
+    )
+
+    assert response.status_code == 204

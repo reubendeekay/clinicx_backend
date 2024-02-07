@@ -88,3 +88,45 @@ def verify_if_doctor(data):
     assert "branch_id" in data
     assert "user" in data
     assert "branch" in data
+
+
+def generate_service_data():
+    return {
+        "name": fake.text(),
+        "price": fake.random_number(),
+        "is_active": True,
+    }
+
+
+def vefify_if_service(data):
+    assert "id" in data
+    assert "name" in data
+    assert "price" in data
+
+
+def generate_patient_data():
+
+    return {
+        "blood_group": "A+",
+        "address": fake.address(),
+        "about": fake.text(),
+        "email": fake.email(),
+        "phone_number": fake.phone_number(),
+        "first_name": fake.first_name(),
+        "last_name": fake.last_name(),
+        "gender": "Male",
+        "user_image": "https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI=",
+        "date_of_birth": "01/01/1990",
+        "marital_status": "Single",
+    }
+
+
+def verify_if_patient(data):
+    assert "id" in data
+    assert "blood_group" in data
+    assert "address" in data
+    assert "about" in data
+    assert "email" in data
+    assert "phone_number" in data
+    assert "first_name" in data
+    assert "last_name" in data

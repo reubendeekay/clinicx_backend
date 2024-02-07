@@ -81,21 +81,21 @@ async def create_appointment(
     db.add(new_appointment)
     db.commit()
     db.refresh(new_appointment)
-    formatted_date = new_appointment.appointment_date.strftime("%Y-%m-%d")
-    formatted_time = new_appointment.appointment_date.strftime("%H:%M %p")
+    formatted_date = new_appointment.appointment_date
+    formatted_time = new_appointment.appointment_time
     print(formatted_date, formatted_time)
     print(user_doctor.email, patient.email)
     print(user_doctor.first_name, patient.first_name)
 
-    # await send_appointment_email(
-    #     email=patient.email,
-    #     user=patient.first_name,
-    #     doctor=f"{user_doctor.first_name} {user_doctor.last_name}",
-    #     branch="TBD",
-    #     reason=appointment.reason,
-    #     date=formatted_date,
-    #     time=formatted_time,
-    # )
+    await send_appointment_email(
+        email=patient.email,
+        user=patient.first_name,
+        doctor=f"{user_doctor.first_name} {user_doctor.last_name}",
+        branch="TBD",
+        reason=appointment.reason,
+        date=formatted_date,
+        time=formatted_time,
+    )
 
     return new_appointment
 
