@@ -20,7 +20,9 @@ def get_branches(
     skip: int = 0,
     search: Optional[str] = "",
 ):
-
+    if search != "":
+        query = f"SELECT * FROM branches WHERE name ILIKE '%{search}%' OR description ILIKE '%{search}%' OR address ILIKE '%{search}%'"
+        return db.execute(query).fetchall()
     return (
         db.query(models.Branch)
         .filter(models.Branch.name.ilike(f"%{search}%"))
