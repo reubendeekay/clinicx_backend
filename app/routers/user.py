@@ -2,7 +2,7 @@ from http import HTTPStatus
 from typing import List
 from fastapi import APIRouter, Depends, HTTPException
 from ..database import SessionLocal, get_db
-from .. import models, schemas, utils
+from .. import models, schemas, utils, communication
 
 
 router = APIRouter(prefix="/users", tags=["users"])
@@ -23,7 +23,7 @@ def get_user(user_id: int, db: SessionLocal = Depends(get_db)):
 
 
 @router.post("/", status_code=HTTPStatus.CREATED, response_model=schemas.User)
-def create_user(user: schemas.UserCreate, db: SessionLocal = Depends(get_db)):
+async def create_user(user: schemas.UserCreate, db: SessionLocal = Depends(get_db)):
 
     hashed_password = utils.hash(user.password)
     user.password = hashed_password
@@ -32,6 +32,12 @@ def create_user(user: schemas.UserCreate, db: SessionLocal = Depends(get_db)):
     db.add(new_user)
     db.commit()
     db.refresh(new_user)
+
+    await communication.send_email(
+        email=user.email,
+        subject="Welcome to the clinic",
+        body=f"Hi {user.first_name}, welcome to the clinic. Your account has been created successfully",
+    )
     return new_user
 
 

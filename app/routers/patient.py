@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import func
 from ..database import SessionLocal, get_db
 from .. import models, schemas, oauth2
-from ..communication import send_email
+from ..communication import send_user_email
 
 
 router = APIRouter(
@@ -22,7 +22,7 @@ def get_patients(
     search: Optional[str] = "",
 ):
 
-    return db.query(models.Patient).fi.offset(skip).limit(limit).all()
+    return db.query(models.Patient).offset(skip).limit(limit).all()
 
 
 @router.get("/{patient_id}", response_model=schemas.PatientOut)
@@ -58,10 +58,10 @@ async def create_patient(
     db.commit()
     db.refresh(new_patient)
 
-    await send_email(
+    await send_user_email(
         email=new_patient.email,
-        subject="Welcome to the clinic",
-        body=f"Hi {new_patient.first_name}, welcome to the clinic. Your account has been created successfully. Your patient id is {new_patient.id} and use your phone number to always access our services.",
+        user=new_patient.first_name,
+        # body=f"Hi {new_patient.first_name}, welcome to the clinic. Your account has been created successfully. Your patient id is {new_patient.id} and use your phone number to always access our services.",
     )
     return new_patient
 

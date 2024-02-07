@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import func
 from ..database import SessionLocal, get_db
 from .. import models, schemas, oauth2
-from ..communication import send_email
+from ..communication import send_appointment_email
 
 
 router = APIRouter(
@@ -57,6 +57,9 @@ async def create_appointment(
     if doctor is None:
         raise HTTPException(status_code=404, detail="Doctor not found")
 
+    user_doctor = db.query(models.User).filter(models.User.id == doctor.user_id).first()
+    print(user_doctor.first_name)
+
     # Check if patient exists
     patient = (
         db.query(models.Patient)
@@ -79,17 +82,20 @@ async def create_appointment(
     db.commit()
     db.refresh(new_appointment)
     formatted_date = new_appointment.appointment_date.strftime("%Y-%m-%d")
-    formatted_time = new_appointment.appointment_date.strftime("%H:%M:%S")
-    mail_message = (
-        "Your appointment for "
-        + service.name
-        + " with ClinicX"
-        + " has been scheduled for "
-        + formatted_date
-        + " at "
-        + formatted_time
-    )
-    await send_email(patient.email, "ClinicX Appointment Created", mail_message)
+    formatted_time = new_appointment.appointment_date.strftime("%H:%M %p")
+    print(formatted_date, formatted_time)
+    print(user_doctor.email, patient.email)
+    print(user_doctor.first_name, patient.first_name)
+
+    # await send_appointment_email(
+    #     email=patient.email,
+    #     user=patient.first_name,
+    #     doctor=f"{user_doctor.first_name} {user_doctor.last_name}",
+    #     branch="TBD",
+    #     reason=appointment.reason,
+    #     date=formatted_date,
+    #     time=formatted_time,
+    # )
 
     return new_appointment
 
