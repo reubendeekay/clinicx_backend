@@ -14,7 +14,6 @@ router = APIRouter(prefix="/doctors", tags=["doctors"])
 @router.get("/", response_model=List[schemas.DoctorOut])
 def get_doctors(
     db: SessionLocal = Depends(get_db),
-    current_user: schemas.User = Depends(oauth2.get_current_user),
     limit: int = 10,
     skip: int = 0,
     search: Optional[str] = "",
@@ -27,7 +26,6 @@ def get_doctors(
 def get_doctor(
     doctor_id: int,
     db: SessionLocal = Depends(get_db),
-    current_user: schemas.User = Depends(oauth2.get_current_user),
 ):
     doctor = db.query(models.Doctor).filter(models.Doctor.id == doctor_id).first()
     if doctor is None:
