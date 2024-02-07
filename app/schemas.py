@@ -34,7 +34,7 @@ class UserBase(BaseModel):
     user_image: str = (
         "https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI="
     )
-    date_of_birth: datetime
+    date_of_birth: str
     marital_status: MaritalStatus
 
     class Config:
@@ -140,7 +140,7 @@ class PatientBase(BaseModel):
     user_image: str = (
         "https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI="
     )
-    date_of_birth: datetime
+    date_of_birth: str
     marital_status: MaritalStatus
 
     class Config:
@@ -165,8 +165,8 @@ class AppointmentBase(BaseModel):
     patient_id: int
     doctor_id: int
     service_id: int
-    appointment_date: datetime
-    appointment_time: datetime
+    appointment_date: str
+    appointment_time: str
     reason: str
 
     class Config:
@@ -193,7 +193,7 @@ class AppointmentOut(AppointmentBase):
 class PaymentBase(BaseModel):
     appointment_id: int
     amount: int
-    payment_date: datetime
+    payment_date: str
     payment_mode: str
 
     class Config:

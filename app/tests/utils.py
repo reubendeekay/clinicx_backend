@@ -24,7 +24,7 @@ def generate_user_data():
         "last_name": fake.last_name(),
         "gender": "Male",
         "role": "doctor",
-        "date_of_birth": "2024-02-04T13:14:12.846Z",
+        "date_of_birth": "01/01/1990",
         "marital_status": "Single",
         "user_image": "https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI=",
     }
@@ -56,8 +56,8 @@ def generate_appointment_data(patient_id: int, doctor_id: int, service_id: int):
         "patient_id": patient_id,
         "doctor_id": doctor_id,
         "service_id": service_id,
-        "appointment_date": "2024-02-07T13:23:54.464Z",
-        "appointment_time": "2024-02-07T13:23:54.464Z",
+        "appointment_date": "12/12/2021",
+        "appointment_time": "11:30 AM",
         "reason": fake.text(),
     }
 
