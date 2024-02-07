@@ -5,11 +5,7 @@ from ..database import SessionLocal, get_db
 from .. import models, schemas, utils
 
 
-router = APIRouter(
-    prefix="/users",
-    tags=["users"]
-
-)
+router = APIRouter(prefix="/users", tags=["users"])
 # USERS
 
 
@@ -42,22 +38,28 @@ def create_user(user: schemas.UserCreate, db: SessionLocal = Depends(get_db)):
 @router.delete("/{user_id}", status_code=HTTPStatus.NO_CONTENT)
 def delete_user(user_id: int, db: SessionLocal = Depends(get_db)):
 
-    cur = db.query(models.User).filter(models.User.id ==
-                                       user_id).delete(synchronize_session=False)
+    cur = (
+        db.query(models.User)
+        .filter(models.User.id == user_id)
+        .delete(synchronize_session=False)
+    )
 
     db.commit()
     if cur is None:
-        raise HTTPException(status_code=HTTPStatus.NOT_FOUND,
-                            detail="User not found")
+        raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="User not found")
 
 
 @router.put("/{user_id}", status_code=HTTPStatus.OK, response_model=schemas.User)
-def update_user(user_id: int, updated_user: schemas.UserCreate, db: SessionLocal = Depends(get_db)):
-    user = db.query(models.User).filter(models.User.id == user_id).update(
-        updated_user.dict(), synchronize_session=False)
+def update_user(
+    user_id: int, updated_user: schemas.UserCreate, db: SessionLocal = Depends(get_db)
+):
+    user = (
+        db.query(models.User)
+        .filter(models.User.id == user_id)
+        .update(updated_user.dict(), synchronize_session=False)
+    )
     db.commit()
 
     if user is None:
-        raise HTTPException(status_code=HTTPStatus.NOT_FOUND,
-                            detail="User not found")
+        raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="User not found")
     return updated_user

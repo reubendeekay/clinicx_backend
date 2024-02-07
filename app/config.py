@@ -1,5 +1,3 @@
-
-
 from pydantic import BaseSettings
 
 
@@ -12,11 +10,12 @@ class Settings(BaseSettings):
     algorithm = str = "HS256"
     secret_key = str
     access_token_expire_minutes: int
+    sendgrid_api_key = str
+    mailjet_api_key = str
+    mailjet_api_secret = str
 
     class Config:
         env_file = ".env"
 
 
-settings = Settings(
-
-)
+settings = Settings()
