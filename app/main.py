@@ -1,4 +1,4 @@
-from .routers import branch, user, auth,doctor,patient,appointment,service,payment
+from .routers import branch, user, auth, doctor, patient, appointment, service, payment
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -9,14 +9,18 @@ from .database import engine
 models.Base.metadata.create_all(bind=engine)
 
 
-app = FastAPI()
+app = FastAPI(
+    description="Clinic X API",
+    title="Clinic X API",
+    version="1.0.0",
+    summary="This is the Clinic X API",
+)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
-
 )
 
 
@@ -31,7 +35,6 @@ app.include_router(router=patient.router)
 app.include_router(router=appointment.router)
 app.include_router(router=service.router)
 app.include_router(router=payment.router)
-
 
 
 @app.get("/")
