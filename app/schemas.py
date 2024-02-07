@@ -98,13 +98,14 @@ class ServiceOut(ServiceBase):
 class DoctorBase(BaseModel):
     branch_id: int
     user_id: int
-    service_id: int
 
     class Config:
         orm_mode = True
 
 
 class DoctorCreate(DoctorBase):
+    service_id: int
+
     pass
 
     class Config:
@@ -115,7 +116,13 @@ class DoctorOut(DoctorBase):
     id: int
     branch: BranchOut
     user: User
-    service: ServiceOut
+
+    class Config:
+        orm_mode = True
+
+
+class DoctorMin(DoctorBase):
+    id: int
 
     class Config:
         orm_mode = True
@@ -176,7 +183,7 @@ class AppointmentCreate(AppointmentBase):
 class AppointmentOut(AppointmentBase):
     id: int
     patient: PatientOut
-    doctor: DoctorOut
+    doctor: DoctorMin
     service: ServiceOut
 
     class Config:

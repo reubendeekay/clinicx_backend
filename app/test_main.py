@@ -6,6 +6,10 @@ from .tests.utils import (
     generate_user_data,
     generate_branch_data,
     verify_if_branch,
+    generate_appointment_data,
+    verify_if_appointment,
+    generate_doctor_data,
+    verify_if_doctor,
 )
 
 
@@ -13,7 +17,7 @@ client = TestClient(app)
 fake = Faker()
 
 
-# Test utils
+# TEST UTILS======================================
 
 
 def create_user():
@@ -24,20 +28,60 @@ def create_user():
     return response.json()
 
 
+def create_user_with_password():
+    user = generate_user_data()
+    response = client.post("/users/", json=user)
+
+    assert response.status_code == 201
+    return user
+
+
+def create_doctor():
+    user = create_user()
+    branch = create_branch()
+    doctor = generate_doctor_data(user_id=user["id"], branch_id=branch["id"])
+    token = login_user()["access_token"]
+
+    response = client.post(
+        "/doctors/", json=doctor, headers={"Authorization": f"Bearer {token}"}
+    )
+
+    assert response.status_code == 201
+    return response.json()
+
+
 def create_branch():
     branch = generate_branch_data()
-    response = client.post("/branches/", json=branch)
+    token = login_user()["access_token"]
+    response = client.post(
+        "/branches/", json=branch, headers={"Authorization": f"Bearer {token}"}
+    )
+    assert response.status_code == 201
+    return response.json()
+
+
+def create_appointment():
+
+    appointment = generate_appointment_data()
+    token = login_user()["access_token"]
+    response = client.post(
+        "/appointments/", json=appointment, headers={"Authorization": f"Bearer {token}"}
+    )
     assert response.status_code == 201
     return response.json()
 
 
 def login_user():
-    user = create_user()
+    user = create_user_with_password()
     response = client.post(
         "/login/", data={"username": user["email"], "password": user["password"]}
     )
     assert response.status_code == 201
+    print(response.json())
     return response.json()
+
+
+# START OF TESTS=====================
 
 
 def test_read_root():
@@ -86,3 +130,80 @@ def test_delete_user():
     response = client.get(f"/users/{user['id']}")
     assert response.status_code == 404
     assert response.json() == {"detail": "User not found"}
+
+
+# BRANCH TESTS
+
+
+def test_create_branch():
+    branch = create_branch()
+    verify_if_branch(branch)
+
+
+def test_get_branch():
+    branch = create_branch()
+    response = client.get(f"/branches/{branch['id']}")
+    assert response.status_code == 200
+    data = response.json()
+    verify_if_branch(data)
+
+
+def test_get_branches():
+    response = client.get("/branches/")
+    assert response.status_code == 200
+    assert response.json() == [] or response.json() is not None
+    verify_if_branch(response.json()[0])
+
+
+def test_delete_branch():
+    branch = create_branch()
+    token = login_user()["access_token"]
+    response = client.delete(
+        f"/branches/{branch['id']}", headers={"Authorization": f"Bearer {token}"}
+    )
+    assert response.status_code == 204
+    response = client.get(f"/branches/{branch['id']}")
+    assert response.status_code == 404
+    assert response.json() == {"detail": "Branch not found"}
+
+
+# DOCTOR TEST
+def test_create_doctor():
+    doctor = create_doctor()
+    verify_if_doctor(doctor)
+
+
+def test_get_doctor():
+    doctor = create_doctor()
+    token = login_user()["access_token"]
+    response = client.get(
+        f"/doctors/{doctor['id']}", headers={"Authorization": f"Bearer {token}"}
+    )
+    assert response.status_code == 200
+    data = response.json()
+    verify_if_doctor(data)
+
+
+def test_get_doctors():
+    token = login_user()["access_token"]
+    response = client.get("/doctors/", headers={"Authorization": f"Bearer {token}"})
+    assert response.status_code == 200
+    assert response.json() == [] or response.json() is not None
+    verify_if_doctor(response.json()[0])
+
+
+def test_delete_doctor():
+    doctor = create_doctor()
+    token = login_user()["access_token"]
+    response = client.delete(
+        f"/doctors/{doctor['id']}", headers={"Authorization": f"Bearer {token}"}
+    )
+    assert response.status_code == 204
+
+
+# APPOINTMENT TESTS
+
+
+# def test_create_appointment():
+#     appointment = create_appointment()
+#     verify_if_appointment(appointment)

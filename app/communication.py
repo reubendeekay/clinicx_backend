@@ -1,10 +1,13 @@
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
 from .config import settings
-from mailjet_rest import Client
+from .config import settings
 
 
 async def send_email(email: str, subject: str, body: str):
+    if settings.environment == "test":
+        return {"message": "Email not sent"}
+
     message = Mail(
         from_email="reubenjefwa1@gmail.com",
         to_emails=email,
@@ -24,6 +27,8 @@ async def send_email(email: str, subject: str, body: str):
 
 
 async def send_user_email(email: str, user: str):
+    if settings.environment == "test":
+        return {"message": "Email not sent"}
     message = Mail(
         from_email="reubenjefwa1@gmail.com",
         to_emails=email,
@@ -49,6 +54,8 @@ async def send_user_email(email: str, user: str):
 async def send_appointment_email(
     email: str, user: str, doctor: str, branch: str, reason: str, date: str, time: str
 ):
+    if settings.environment == "test":
+        return {"message": "Email not sent"}
     message = Mail(
         from_email="reubenjefwa1@gmail.com",
         to_emails=email,

@@ -49,3 +49,42 @@ def verify_if_branch(data):
     assert "phone_number" in data
     assert "longitude" in data
     assert "latitude" in data
+
+
+def generate_appointment_data(patient_id: int, doctor_id: int, service_id: int):
+    return {
+        "patient_id": patient_id,
+        "doctor_id": doctor_id,
+        "service_id": service_id,
+        "appointment_date": "2024-02-07T13:23:54.464Z",
+        "appointment_time": "2024-02-07T13:23:54.464Z",
+        "reason": fake.text(),
+    }
+
+
+def verify_if_appointment(data):
+    assert "id" in data
+    assert "patient_id" in data
+    assert "doctor_id" in data
+    assert "service_id" in data
+    assert "appointment_date" in data
+    assert "appointment_time" in data
+    assert "reason" in data
+    assert "patient" in data
+    assert "doctor" in data
+    assert "service" in data
+
+
+def generate_doctor_data(user_id: int, branch_id: int):
+    return {
+        "user_id": user_id,
+        "branch_id": branch_id,
+    }
+
+
+def verify_if_doctor(data):
+    assert "id" in data
+    assert "user_id" in data
+    assert "branch_id" in data
+    assert "user" in data
+    assert "branch" in data
