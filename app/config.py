@@ -11,8 +11,6 @@ class Settings(BaseSettings):
     secret_key = str
     access_token_expire_minutes: int
     sendgrid_api_key = str
-    mailjet_api_key = str
-    mailjet_api_secret = str
 
     class Config:
         env_file = ".env"
