@@ -61,7 +61,7 @@ async def create_patient(
     await send_email(
         email=new_patient.email,
         subject="Welcome to the clinic",
-        message=f"Hi {new_patient.first_name}, welcome to the clinic. Your account has been created successfully. Your patient id is {new_patient.id} and use your phone number to always access our services.",
+        body=f"Hi {new_patient.first_name}, welcome to the clinic. Your account has been created successfully. Your patient id is {new_patient.id} and use your phone number to always access our services.",
     )
     return new_patient
 
