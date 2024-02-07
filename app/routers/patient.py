@@ -59,7 +59,7 @@ async def create_patient(
     db.refresh(new_patient)
 
     await send_email(
-        email_to=new_patient.email,
+        email=new_patient.email,
         subject="Welcome to the clinic",
         message=f"Hi {new_patient.first_name}, welcome to the clinic. Your account has been created successfully. Your patient id is {new_patient.id} and use your phone number to always access our services.",
     )
