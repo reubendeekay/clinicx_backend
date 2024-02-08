@@ -125,38 +125,46 @@ def test_create_user():
 
 
 def test_get_user():
+    token = login_user()["access_token"]
     user = create_user()
-    response = client.get(f"/users/{user['id']}")
+    response = client.get(
+        f"/users/{user['id']}", headers={"Authorization": f"Bearer {token}"}
+    )
     assert response.status_code == 200
     data = response.json()
     verify_if_user(data)
 
 
 def test_get_users():
-    response = client.get("/users/")
+    token = login_user()["access_token"]
+    response = client.get("/users/", headers={"Authorization": f"Bearer {token}"})
     assert response.status_code == 200
     assert response.json() == [] or response.json() is not None
     verify_if_user(response.json()[0])
 
 
-# def test_update_user():
-#     user = create_user()
-#     new_user = generate_user_data()
-#     response = client.put(f"/users/{user['id']}", json=new_user)
-#     assert response.status_code == 200
-#     data = response.json()
-#     verify_if_user(data)
-#     assert data["email"] == new_user["email"]
-#     assert data["phone_number"] == new_user["phone_number"]
-#     assert data["first_name"] == new_user["first_name"]
-#     assert data["last_name"] == new_user["last_name"]
+def test_update_user():
+    token = login_user()["access_token"]
+    user = create_user()
+    new_user = generate_user_data()
+    response = client.put(
+        f"/users/{user['id']}",
+        json=new_user,
+        headers={"Authorization": f"Bearer {token}"},
+    )
+    assert response.status_code == 200
 
 
 def test_delete_user():
+    token = login_user()["access_token"]
     user = create_user()
-    response = client.delete(f"/users/{user['id']}")
+    response = client.delete(
+        f"/users/{user['id']}", headers={"Authorization": f"Bearer {token}"}
+    )
     assert response.status_code == 204
-    response = client.get(f"/users/{user['id']}")
+    response = client.get(
+        f"/users/{user['id']}", headers={"Authorization": f"Bearer {token}"}
+    )
     assert response.status_code == 404
     assert response.json() == {"detail": "User not found"}
 
