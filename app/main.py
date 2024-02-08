@@ -1,7 +1,7 @@
 from .routers import branch, user, auth, doctor, patient, appointment, service, payment
 
 from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
+from starlette.middleware.cors import CORSMiddleware
 from . import models
 from .database import engine
 
