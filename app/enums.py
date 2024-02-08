@@ -3,24 +3,24 @@ from enum import Enum, unique
 
 @unique
 class Role(Enum):
-    PATIENT = "patient"
-    DOCTOR = "doctor"
-    ADMIN = "admin"
-    SUPER_ADMIN = "super_admin"
+    PATIENT = "PATIENT"
+    DOCTOR = "DOCTOR"
+    ADMIN = "ADMIN"
+    SUPER_ADMIN = "SUPER_ADMIN"
 
 
 @unique
 class Gender(Enum):
-    MALE = "Male"
-    FEMALE = "Female"
+    MALE = "MALE"
+    FEMALE = "FEMALE"
 
 
 @unique
 class MaritalStatus(Enum):
-    SINGLE = "Single"
-    MARRIED = "Married"
-    DIVORCED = "Divorced"
-    WIDOWED = "Widowed"
+    SINGLE = "SINGLE"
+    MARRIED = "MARRIED"
+    DIVORCED = "DIVORCED"
+    WIDOWED = "WIDOWED"
 
 
 @unique

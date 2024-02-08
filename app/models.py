@@ -58,7 +58,7 @@ class User(Base):
     last_name = Column(String, nullable=False)
     is_active = Column(Boolean, server_default="TRUE", nullable=False)
     gender = Column(Enum(Gender), default=Gender.MALE)
-    marital_status = Column(Enum(MaritalStatus), default=MaritalStatus.SINGLE)
+    marital_status = Column(Enum(MaritalStatus), default=MaritalStatus)
     user_image = Column(String, nullable=False)
     date_of_birth = Column(String, nullable=False)
     role = Column(Enum(Role), default=Role.PATIENT)
