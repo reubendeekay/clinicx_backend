@@ -87,7 +87,8 @@ def delete_service(
 
 
 @router.put(
-    "/{service_id}", status_code=HTTPStatus.OK, response_model=schemas.ServiceOut
+    "/{service_id}",
+    status_code=HTTPStatus.OK,
 )
 def update_service(
     service_id: int,

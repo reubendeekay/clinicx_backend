@@ -138,7 +138,6 @@ def delete_appointment(
 @router.put(
     "/{appointment_id}",
     status_code=HTTPStatus.OK,
-    response_model=schemas.AppointmentOut,
 )
 def update_appointment(
     appointment_id: int,
@@ -152,7 +151,6 @@ def update_appointment(
         .update(updated_appointment.dict(), synchronize_session=False)
     )
     db.commit()
-    db.refresh(appointment)
     return appointment
 
 

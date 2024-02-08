@@ -27,7 +27,7 @@ fake = Faker()
 def create_user():
     user = generate_user_data()
     response = client.post("/users/", json=user)
-
+    print(user)
     assert response.status_code == 201
     return response.json()
 
@@ -272,6 +272,18 @@ def test_delete_service():
         f"/services/{service['id']}", headers={"Authorization": f"Bearer {token}"}
     )
     assert response.status_code == 204
+
+
+# def update_service():
+#     token = login_user()["access_token"]
+#     service = create_service()
+#     new_service = generate_service_data()
+#     response = client.put(
+#         f"/services/{service['id']}",
+#         json=new_service,
+#         headers={"Authorization": f"Bearer {token}"},
+#     )
+#     assert response.status_code == 200
 
 
 # Patient tests

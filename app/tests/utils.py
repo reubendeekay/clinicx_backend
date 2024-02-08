@@ -22,10 +22,10 @@ def generate_user_data():
         "phone_number": fake.phone_number(),
         "first_name": fake.first_name(),
         "last_name": fake.last_name(),
-        "gender": "Male",
-        "role": "doctor",
+        "gender": "MALE",
+        "role": "DOCTOR",
         "date_of_birth": "01/01/1990",
-        "marital_status": "Single",
+        "marital_status": "SINGLE",
         "user_image": "https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI=",
     }
 
@@ -114,10 +114,10 @@ def generate_patient_data():
         "phone_number": fake.phone_number(),
         "first_name": fake.first_name(),
         "last_name": fake.last_name(),
-        "gender": "Male",
+        "gender": "MALE",
         "user_image": "https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI=",
         "date_of_birth": "01/01/1990",
-        "marital_status": "Single",
+        "marital_status": "SINGLE",
     }
 
 

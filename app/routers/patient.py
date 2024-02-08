@@ -90,9 +90,7 @@ def delete_patient(
     return {"message": "Patient deleted"}
 
 
-@router.patch(
-    "/{patient_id}", status_code=HTTPStatus.OK, response_model=schemas.PatientOut
-)
+@router.patch("/{patient_id}", status_code=HTTPStatus.OK)
 def update_patient(
     patient_id: int,
     updated_patient: schemas.PatientBase,
