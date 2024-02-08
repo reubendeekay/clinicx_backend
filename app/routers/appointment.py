@@ -63,13 +63,24 @@ async def create_appointment(
     print(user_doctor.first_name)
 
     # Check if patient exists
-    patient = (
-        db.query(models.Patient)
-        .filter(models.Patient.id == appointment.patient_id)
-        .first()
-    )
+
+    if len(str(appointment.patient_id)) > 6:
+        patient = (
+            db.query(models.Patient)
+            .filter(models.Patient.phone_number == appointment.patient_id)
+            .first()
+        )
+    else:
+
+        patient = (
+            db.query(models.Patient)
+            .filter(models.Patient.id == appointment.patient_id)
+            .first()
+        )
     if patient is None:
         raise HTTPException(status_code=404, detail="Patient not found")
+
+    appointment.patient_id = patient.id
 
     new_appointment = models.Appointment(**appointment.dict())
 
