@@ -14,7 +14,7 @@ router = APIRouter(
 )
 
 
-@router.get("/", response_model=List[schemas.PatientOut])
+@router.get("/")
 def get_patients(
     db: SessionLocal = Depends(get_db),
     limit: int = 10,
