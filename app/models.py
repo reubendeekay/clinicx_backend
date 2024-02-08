@@ -142,10 +142,9 @@ class Payment(Base):
     appointment_id = Column(Integer, ForeignKey("appointments.id"))
     appointment = relationship("Appointment", back_populates="payments")
     amount = Column(Integer, nullable=False)
-    description = Column(String, nullable=False)
+    payment_mode = Column(String, nullable=False)
     discount = Column(Integer)
     is_paid = Column(Boolean, server_default="FALSE", nullable=False)
-    total_amount = Column(Integer, nullable=False)
     created_at = Column(
         TIMESTAMP(timezone=True), server_default=text("NOW()"), nullable=False
     )

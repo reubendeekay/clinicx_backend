@@ -201,8 +201,9 @@ class AppointmentOut(AppointmentBase):
 class PaymentBase(BaseModel):
     appointment_id: int
     amount: int
-    payment_date: str
     payment_mode: str
+    discount: int
+    is_paid: bool = True
 
     class Config:
         orm_mode = True
@@ -217,7 +218,6 @@ class PaymentCreate(PaymentBase):
 
 class PaymentOut(PaymentBase):
     id: int
-    appointment: AppointmentOut
 
     class Config:
         orm_mode = True
