@@ -129,19 +129,19 @@ class DoctorMin(DoctorBase):
 
 
 class PatientBase(BaseModel):
-    blood_group: BloodGroup
+    blood_group: str
     address: str
     about: str
-    email: EmailStr
+    email: str
     phone_number: str
     first_name: str
     last_name: str
-    gender: Gender
+    gender: str
     user_image: str = (
         "https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI="
     )
     date_of_birth: str
-    marital_status: MaritalStatus
+    marital_status: str
 
     class Config:
         orm_mode = True
