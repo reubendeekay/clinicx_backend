@@ -17,7 +17,6 @@ router = APIRouter(
 @router.get("/", response_model=List[schemas.PatientOut])
 def get_patients(
     db: SessionLocal = Depends(get_db),
-    current_user: schemas.User = Depends(oauth2.get_current_user),
     limit: int = 10,
     skip: int = 0,
     search: Optional[str] = "",
